@@ -9,7 +9,7 @@ def main():
     disable_torch_init()
     image = 'moellava/serve/examples/extreme_ironing.jpg'
     inp = 'What is unusual about this image?'
-    model_path = 'LanguageBind/MoE-LLaVA-xxxxxxxxxxxxxxxx'  # choose a model
+    model_path = 'LanguageBind/MoE-LLaVA-Phi2-2.7B-4e'  # choose a model
     device = 'cuda'
     load_4bit, load_8bit = False, False
     model_name = get_model_name_from_path(model_path)

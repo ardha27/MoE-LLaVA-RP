@@ -29,18 +29,25 @@ class DictToObject:
 # ---------------------------------------------------------------------------- #
 # Application Functions                                                        #
 # ---------------------------------------------------------------------------- #
-def load_image(image_file: str):
-    if image_file.startswith('http://') or image_file.startswith('https://'):
-        response = requests.get(image_file)
+def load_image(data):
+    # Case 1: If the input is a URL, fetch the image and convert it to a PIL Image
+    if data.startswith('http://') or data.startswith('https://'):
+        response = requests.get(data)
         image = Image.open(BytesIO(response.content)).convert('RGB')
+    
+    # Case 2: If the input is base64, decode it and convert to a PIL Image
+    elif data.startswith('data:image'):
+        # Find the start of the base64 string
+        base64_str_index = data.find('base64,') + 7
+        # Extract the base64 string and decode it
+        image_data = base64.b64decode(data[base64_str_index:])
+        # Convert to PIL Image
+        image = Image.open(BytesIO(image_data)).convert('RGB')
+    
+    # Case 3: Assume the input is a file path and open the image
     else:
-        image = load_image_from_base64(image_file)
-    return image
-
-
-def load_image_from_base64(base64_str: str):
-    image_bytes = base64.b64decode(base64_str)
-    image = Image.open(BytesIO(image_bytes)).convert('RGB')
+        image = Image.open(data).convert('RGB')
+    
     return image
 
 
